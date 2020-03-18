@@ -12,6 +12,8 @@ parser.add_argument("--horizontal", type=int, default = 1, help="horizontal coun
 parser.add_argument("--vertical", type=int, default = 1, help="vertical count")
 args = parser.parse_args()
 
+FPS = 30.0
+SLEEP = 1.0 / FPS
 # Configuration for the matrix
 options = RGBMatrixOptions()
 options.cols = 64
@@ -79,4 +81,4 @@ while cap.isOpened():
 
     elapsed = time.time() - start
     #print('elapsed:%f'%(elapsed))
-    time.sleep(max([0, 0.066 - elapsed]))
+    time.sleep(max([0, SLEEP - elapsed]))
