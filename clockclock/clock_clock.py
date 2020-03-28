@@ -9,7 +9,9 @@ import math
 from datetime import datetime
 from PIL import Image, ImageDraw
 import random
-
+from PIL import Image
+from PIL import ImageDraw
+from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
 FPS = 30.0
 SLEEP = 1.0 / FPS
@@ -33,6 +35,22 @@ arm_color2 = (96,255,96)
 Canvas_W = 192 #lmargin + rmargin + r * 2 * 8 + margin * 7
 Canvas_H = 64  #tmargin + bmargin + r * 2 * 3 + margin * 2
 step_angle = 1.8    
+
+options = RGBMatrixOptions()
+options.cols = 64
+options.rows = 64
+options.chain_length =3 
+options.parallel = 1
+options.brightness = 80
+options.pwm_bits = 11
+options.gpio_slowdown = 4.0
+options.show_refresh_rate = 1
+options.hardware_mapping = 'regular'  # If you have an Adafruit HAT: 'adafruit-hat'
+#options.hardware_mapping = 'adafruit-hat'  # If you have an Adafruit HAT: 'adafruit-hat'
+options.pwm_dither_bits = 0
+
+matrix = RGBMatrix(options = options)
+double_buffer = matrix.CreateFrameCanvas()
 
 digit_basic = [[(45, -45),(45, -45),(45, -45)],  [(45, -45), ( 45, -45),( 45, -45)] ]
 digit_1 = [ [(225, 225),(225, 225),(225, 225)],  [(180, 180),(  0, 180),(  0,   0)] ]
@@ -246,6 +264,7 @@ def initialize_clocks(img):
     M1_clocks.initialize_clocks(img)
 
 def restore_clocks(img):
+    global double_buffer
     H0_clocks.reset_design_clock()
     H1_clocks.reset_design_clock()
     M0_clocks.reset_design_clock()
@@ -262,8 +281,14 @@ def restore_clocks(img):
         rets.append(ret)
         ret, tcanvas = M1_clocks.step_move(tcanvas)
         rets.append(ret)
-        cv2.imshow("clock", tcanvas)
-        cv2.waitKey(1)
+
+        im = cv2.cvtColor(tcanvas, cv2.COLOR_BGR2RGB)
+        im_pil = Image.fromarray(im)
+        double_buffer.SetImage(im_pil)
+        double_buffer.SetImage(im_pil, Canvas_W)
+        double_buffer = matrix.SwapOnVSync(double_buffer)
+        # cv2.imshow("clock", tcanvas)
+        # cv2.waitKey(1)
         sleep_tm = SLEEP - (time.time() - s )
         time.sleep(max(0, sleep_tm))
 
@@ -283,8 +308,14 @@ img = H0_clocks.draw(img)
 img = H1_clocks.draw(img)
 img = M0_clocks.draw(img)
 img = M1_clocks.draw(img)
-cv2.imshow("clock", img)
-cv2.waitKey(100)
+im = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+im_pil = Image.fromarray(im)
+double_buffer.SetImage(im_pil)
+double_buffer.SetImage(im_pil, Canvas_W)
+double_buffer = matrix.SwapOnVSync(double_buffer)
+
+# cv2.imshow("clock", img)
+# cv2.waitKey(100)
 
 while True:
     now = datetime.now()
@@ -305,8 +336,14 @@ while True:
             rets.append(ret)
             ret, tcanvas = M1_clocks.step_move(tcanvas)
             rets.append(ret)
-            cv2.imshow("clock", tcanvas)
-            cv2.waitKey(1)
+            im = cv2.cvtColor(tcanvas, cv2.COLOR_BGR2RGB)
+            im_pil = Image.fromarray(im)
+            double_buffer.SetImage(im_pil)
+            double_buffer.SetImage(im_pil, Canvas_W)
+            double_buffer = matrix.SwapOnVSync(double_buffer)
+            
+            # cv2.imshow("clock", tcanvas)
+            # cv2.waitKey(1)
             sleep_tm = SLEEP - (time.time() - s )
             time.sleep(max(0, sleep_tm))
 
@@ -319,10 +356,5 @@ while True:
     restore_clocks(tcanvas)
     print('restore end')
 
-# ''' test 1 '''
-# test_design(canvas)
-# # img = clocks.restore_clock(canvas, 0, 100)
 # cv2.waitKey(0)
-# clocks.restore_design_clock(canvas)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
