@@ -44,7 +44,7 @@ offscreen_canvas = matrix.CreateFrameCanvas()
 
 font = ImageFont.truetype(myfont, 25)
 text_size = font.getsize(args.text)[0]
-img_width = text_size * 2
+img_width = text_size + options.cols * options.chain_length
 image = Image.new('RGB', (img_width, 32),(0, 0, 0))
 draw = ImageDraw.Draw(image)
 

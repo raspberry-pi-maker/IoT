@@ -40,7 +40,7 @@ offscreen_canvas = matrix.CreateFrameCanvas()
 
 font = ImageFont.truetype(myfont, 25)
 text_size = font.getsize(args.text)[0]
-img_width = text_size * 2
+img_width = text_size + options.cols * options.chain_length
 
 back_img = Image.open(args.image)
 back_img = back_img.resize((img_width, 32))
