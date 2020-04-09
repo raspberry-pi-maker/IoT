@@ -33,7 +33,7 @@ options.rows = 32
 options.chain_length =  4
 options.parallel = 1
 options.gpio_slowdown =  1
-options.show_refresh_rate = 1
+# options.show_refresh_rate = 1
 options.hardware_mapping = 'regular'  # I'm using Electrodragon HAT
 matrix = RGBMatrix(options = options)
 offscreen_canvas = matrix.CreateFrameCanvas()

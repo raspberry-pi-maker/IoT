@@ -37,7 +37,7 @@ options.rows = 32
 options.chain_length =  4
 options.parallel = 1
 options.gpio_slowdown =  1
-options.show_refresh_rate = 1
+# options.show_refresh_rate = 1
 options.hardware_mapping = 'regular'  # I'm using Electrodragon HAT
 matrix = RGBMatrix(options = options)
 offscreen_canvas = matrix.CreateFrameCanvas()
@@ -60,7 +60,7 @@ xpos = 0
 first = True
 while True:
     xpos += 1
-    if (xpos > img_width):
+    if (xpos > (text_size + x_margin + 1)):
         break
 
     offscreen_canvas.SetImage(image, -xpos)
