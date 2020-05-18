@@ -1,3 +1,6 @@
+#-*- coding: utf-8 -*-
+#If this code works, it was written by Seunghyun Lee(www.bluebaynetworks.co.kr).
+#If not, I don't know who wrote it
 '''
 Number       : 10 pixel height
 Character    :  8 pixel height
