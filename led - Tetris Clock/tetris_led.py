@@ -1217,7 +1217,6 @@ class TetrisString():
                 index += 1
             im_pil = Image.fromarray(tcanv) 
             led_buffer.SetImage(im_pil)            
-            led_buffer.SetImage(im_pil, w)
             led_buffer = matrix.SwapOnVSync(led_buffer)
             
             time.sleep(0.05)

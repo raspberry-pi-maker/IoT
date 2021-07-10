@@ -67,7 +67,6 @@ def reset():
     buf = []
     packet_cnt = 0
 
-index = 0
 im_pils = []
 while(True):
     try:
@@ -84,7 +83,6 @@ while(True):
                 print('Total rcv cnt:%d total chunk:%d'%(packet_cnt, cnt))
                 reset()
                 continue
-            index += 1    
             img = np.asarray(buf, dtype=np.uint8)
             img = img.reshape(H,W,C)
             if args.chain == 1:
@@ -106,13 +104,10 @@ while(True):
             #print('final image size:H%d W:%d'% (final.shape[0], final.shape[1]))
 
             im_pil = Image.fromarray(final)
-            im_pils.append(im_pil)
-            if index % 2 == 0:
-                double_buffer.SetImage(im_pils[0])
-                double_buffer.SetImage(im_pils[1], w)
-                double_buffer = matrix.SwapOnVSync(double_buffer)                
-                im_pils.clear()
+            double_buffer.SetImage(im_pil)
+            double_buffer = matrix.SwapOnVSync(double_buffer)                
             reset()
+
 
     except KeyboardInterrupt:
         break

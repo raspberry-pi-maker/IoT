@@ -46,8 +46,6 @@ while True:
         xpos = 0
 
     offscreen_canvas.SetImage(image, -xpos)
-    offscreen_canvas.SetImage(image, -xpos + img_width)
-
     offscreen_canvas = matrix.SwapOnVSync(offscreen_canvas)
     time.sleep(0.01)
 

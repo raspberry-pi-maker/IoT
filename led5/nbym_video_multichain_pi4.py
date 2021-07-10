@@ -39,24 +39,15 @@ cap = cv2.VideoCapture(args.video)
 double_buffer = matrix.CreateFrameCanvas()
 
 while cap.isOpened():
-    im_pils = []
     start = time.time()
-    for i in range(2):
-        ret, im = cap.read()
-        if(ret == False):
-            break
-        im = cv2.resize(im, (canvas_w, canvas_h))
-        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-        im_pil = Image.fromarray(im)
-        im_pils.append(im_pil)
-
+    ret, im = cap.read()
     if(ret == False):
         break
-
-    double_buffer.SetImage(im_pils[0])
-    double_buffer.SetImage(im_pils[1], canvas_w)
+    im = cv2.resize(im, (canvas_w, canvas_h))
+    im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+    im_pil = Image.fromarray(im)
+    double_buffer.SetImage(im_pil)
     double_buffer = matrix.SwapOnVSync(double_buffer)
-
     elapsed = time.time() - start
     #print('elapsed:%f'%(elapsed))
     time.sleep(max([0, 0.066 - elapsed]))
