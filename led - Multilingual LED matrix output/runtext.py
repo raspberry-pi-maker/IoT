@@ -16,7 +16,7 @@ color_R = max(0, min(args.R, 255))
 color_G = max(0, min(args.G, 255))
 color_B = max(0, min(args.B, 255))
 
-myfont = '/usr/local/src/font/%s.bdf'%(args.font)
+myfont = '../font/%s.bdf'%(args.font)
 
 if os.path.exists(myfont) == False:
     print('Font[%s] Not found =>Use default[SourceHanSansK-Regular]'%(myfont))
