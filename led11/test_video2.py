@@ -10,8 +10,7 @@ import socket
 canvas_w = 384
 canvas_h = 512
 parser = argparse.ArgumentParser(description='gif run')
-parser.add_argument('--file', type=str, required=True, help='image file name')
-parser.add_argument('--repeat', type=int, default=1, help='반복 횟수')
+parser.add_argument('--file', type=str, default='./souffle.mp4', help='video file name')
 args = parser.parse_args()
 
 netsender.set_recv_pi([("192.168.11.11", 4321), ("192.168.11.12", 4321), ("192.168.11.13", 4321), ("192.168.11.14", 4321)])
